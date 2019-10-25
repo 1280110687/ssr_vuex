@@ -1,51 +1,89 @@
 <template>
-  <div class="app">
-    <h1>Hello</h1>
-    {{count}}
+  <div>
+  <h1>{{count}}</h1>
+  <div>
+    <ul>
+      <li v-for="item in list" :key="item">{{item}}</li>
+    </ul>
     <hr>
-    <button @click="handleIncrement"> +</button>
-    <button @click="handleDecrement"> -</button>
+    <ul>
+      <li v-for="item in imgList" :key="item">{{item}}</li>
+    </ul>
     <hr>
-    <div>
-      异步获取数据：{{num}}
-    </div>
+    <ul>
+      <li v-for="item in list2" :key="item">
+        <p>改写 getters里面的代码list2 是一个函数 同时又返回了另外一个函数</p>
+        {{item}}
+      </li>
+    </ul>
+    <hr>
+    <ul>
+      <li v-for="item in list_a" :key="item">{{item}}</li>
+    </ul>
+    <hr>
+    <ul>
+      <li v-for="item in list_b" :key="item">{{item}}</li>
+    </ul>
+    <hr>
+    <ul>
+      <li v-for="item in list_c" :key="item">{{item}}</li>
+    </ul>
+    <hr>
+    <ul>
+      <li v-for="item in list_d" :key="item">{{item}}</li>
+    </ul>
+    <hr>
+    <ul>
+      <li v-for="item in list_e" :key="item">{{item}}</li>
+    </ul>
+    <hr>
+    <ul>
+      <li v-for="item in list_o" :key="item">{{item}}</li>
+    </ul>
+    <ul>
+      <li v-for="item in list_p" :key="item">{{item}}</li>
+    </ul>
+    <ul>
+      <li v-for="item in list_q" :key="item">{{item}}</li>
+    </ul>
+  </div>
   </div>
 </template>
 <script>
-import axios from "axios";
+import { mapGetters } from "vuex"
 export default {
   data () {
     return {
-      // count: this.$store.state.count
+      count: this.$store.state.count,
+      list:this.$store.getters.list,
+      // 遍历的 li 中只出现 div
+      // list:this.$store.getters.list.filter((v, i) => v === "div"),
+      imgList: this.$store.getters.imgList,
+      // 过滤 D 字母
+      list2:this.$store.getters.list2('D'),
+      num: 100
     }
   },
   computed: {
-    count(){
-      return this.$store.state.count
+    list_a(){
+      return this.$store.getters.list_a
     },
-    num(){
-      return this.$store.state.num
-    }
-  },
-  methods: {
-    handleIncrement(){
-      let m = 123
-      this.$store.commit('increment',m)
+    list_b(){
+      return this.$store.getters.list_b
     },
-    handleDecrement(){
-      this.$store.commit('decrement')
+    list_c(){
+      return this.$store.getters.list_c
+    },
+    list_d(){
+      return this.$store.getters.list_d
+    },
+    list_e(){
+      return this.$store.getters.list_e
+    },
+    ...mapGetters(['list_o','list_p','list_q']),
+    numStr(){
+      return this.num + '￥'
     }
-  },
-  mounted () {
-    // 发起异步请求
-    axios
-      .get('https://api.zbztb.cn/api/public/v1/home/swiperdata')
-      .then(res => {
-        let num = res.data.message.length
-        console.log(num)
-        // this.$store.commit("updateNum", num)
-        this.$store.dispatch('act_updateNum',num)
-      })
   }
 }
 </script>
